@@ -1,0 +1,444 @@
+Time: 18/06/2025, 15:32:14
+Error: "price" must be greater than or equal to 0
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 18/06/2025, 15:32:17
+Error: "price" must be greater than or equal to 0
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 18/06/2025, 15:32:21
+Error: "price" must be greater than or equal to 0
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 18/06/2025, 15:32:25
+Error: "price" must be greater than or equal to 0
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 18/06/2025, 15:32:30
+Error: "price" must be less than or equal to 9999
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 18/06/2025, 15:32:33
+Error: "price" must be less than or equal to 9999
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 18/06/2025, 15:32:57
+Error: "price" must be less than or equal to 9999
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 06/07/2025, 8:47:29
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 06/07/2025, 8:47:29
+Error: Route: /favicon.ico on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 06/07/2025, 8:47:50
+Error: Route: /api/vacation/2 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 06/07/2025, 10:09:35
+Error: "startDate" must be in ISO 8601 date format
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 06/07/2025, 10:10:20
+Error: "startDate" must be in ISO 8601 date format
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 06/07/2025, 10:10:39
+Error: "startDate" must be in ISO 8601 date format
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:00:41
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:01:56
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:02:03
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:02:10
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:02:46
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:02:56
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:04:31
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:04:44
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:05:31
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:05:40
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:11:51
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:12:24
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:13:27
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:13:48
+Error: "image.mimetype" must be one of [image/jpeg, image/png, image/webp]
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:31:37
+Error: Route: /favicon.ico on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:34:34
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:37:18
+Error: You are not logged in!
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:37:18
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:38:04
+Error: You are not logged in!
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:38:04
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:38:47
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:39:29
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:39:39
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:39:51
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:40:15
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:40:38
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:41:48
+Error: Route: /api/vacations/likes/6 on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:41:48
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:42:52
+Error: Route: /api/vacations/likes/6 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:42:56
+Error: Route: /api/vacations/likes/7 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:42:59
+Error: Route: /api/vacations/likes/12 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:44:03
+Error: Route: /api/vacations/likes/12 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:44:05
+Error: Route: /api/vacations/likes/12 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:44:09
+Error: Route: /api/vacations/likes/5 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:44:35
+Error: Route: /api/vacations/likes/4 on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:45:06
+Error: Route: /api/vacations/unlike/4 on method DELETE not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:45:08
+Error: Route: /api/vacations/unlike/4 on method DELETE not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:45:09
+Error: Route: /api/vacations/unlike/4 on method DELETE not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:45:43
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:47:08
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:47:27
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:48:14
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:49:16
+Error: Route: /api/unExistingUrl on method GET not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:50:26
+Error: id 16 not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:51:16
+Error: id 32 not found
+Client IP: ::ffff:127.0.0.1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:53:38
+Error: Route: /.well-known/appspecific/com.chrome.devtools.json on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:53:43
+Error: Route: /.well-known/appspecific/com.chrome.devtools.json on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:53:48
+Error: Route: /.well-known/appspecific/com.chrome.devtools.json on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:54:36
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 5:54:46
+Error: Route: /.well-known/appspecific/com.chrome.devtools.json on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 6:00:47
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 09/07/2025, 6:05:14
+Error: Route: /api/vacations/likes/9 on method GET not found
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 14/07/2025, 5:19:14
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 14/07/2025, 5:19:21
+Error: Incorrect email or password
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 14/07/2025, 5:33:53
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 14/07/2025, 5:34:00
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 03/12/2025, 17:01:45
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 03/12/2025, 17:01:48
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 03/12/2025, 17:01:53
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 03/12/2025, 17:02:06
+Error: Incorrect email or password
+Client IP: ::1
+
+--------------------------------------------------------
+
+Time: 03/12/2025, 17:06:07
+Error: You are not logged in!
+Client IP: ::1
+
+--------------------------------------------------------
+

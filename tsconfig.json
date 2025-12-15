@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "removeComments": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node16",
+        "module": "NodeNext"
+    }
+}
