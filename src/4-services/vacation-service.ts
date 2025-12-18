@@ -11,29 +11,31 @@ class VacationService {
     public async getAllVacations(): Promise<VacationModel[]> {
 
         const sql = `
-            SELECT
-  id, destination, description,
-  "startDate","endDate", price,
-  CONCAT($1, "imageName") AS "imageUrl"
-FROM vacations
-ORDER BY "startDate"
-        `;
+  SELECT
+    id, destination, description,
+    "startDate","endDate", price,
+    CONCAT($1::text, COALESCE("imageName", '')) AS "imageUrl"
+  FROM vacations
+  ORDER BY "startDate"
+`;
 
-        return await dal.execute<VacationModel>(sql, [appConfig.imagesUrl]);
+        return await dal.execute<VacationModel>(sql, [appConfig.imagesUrl ?? ""]);
+
     }
 
     public async getOneVacation(vacationId: number): Promise<VacationModel> {
 
         const sql = `
-            SELECT 
-                *,
-                CONCAT($1, "imageName") AS "imageUrl"
-            FROM vacations
-            WHERE id = $2
-        `;
+  SELECT
+    *,
+    CONCAT($1::text, COALESCE("imageName", '')) AS "imageUrl"
+  FROM vacations
+  WHERE id = $2::int
+`;
 
-        const vacations = await dal.execute<VacationModel>(sql, [appConfig.imagesUrl, vacationId]);
+        const vacations = await dal.execute<VacationModel>(sql, [appConfig.imagesUrl ?? "", vacationId]);
         return vacations[0];
+
     }
 
     public async addVacation(vacation: VacationModel): Promise<VacationModel> {
@@ -78,13 +80,14 @@ RETURNING *
             const newImageName = await fileSaver.add(vacation.image);
 
             sql = `
-                SET destination=$1, description=$2,
-    "startDate"=$3, "endDate"=$4,
-    price=$5, "imageName"=$6
-WHERE id=$7
-RETURNING *
+  UPDATE vacations
+  SET destination=$1, description=$2,
+      "startDate"=$3, "endDate"=$4,
+      price=$5, "imageName"=$6
+  WHERE id=$7::int
+  RETURNING *
+`;
 
-            `;
 
             values = [
                 vacation.destination,
@@ -131,7 +134,7 @@ RETURNING *
 
         const sql = `
             DELETE FROM vacations
-            WHERE id=$1
+WHERE id=$1::int
         `;
 
         const affected = await dal.executeNonQuery(sql, [id]);
@@ -158,7 +161,7 @@ RETURNING *
 
         const sql = `
   INSERT INTO likes ("userId","vacationId")
-VALUES ($1,$2)
+VALUES ($1::int, $2::int)
 ON CONFLICT DO NOTHING
 
 `;
