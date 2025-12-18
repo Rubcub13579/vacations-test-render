@@ -13,11 +13,12 @@ class UserService {
         user.password = cyber.hash(user.password);
 
         const sql = `
-            INSERT INTO users
-            (firstName, lastName, email, password, roleId)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING *
-        `;
+  INSERT INTO users
+  ("firstName", "lastName", email, password, "roleId")
+  VALUES ($1, $2, $3, $4, $5)
+  RETURNING *
+`;
+
 
         const values = [
             user.firstName,
@@ -45,10 +46,11 @@ class UserService {
         credentials.password = cyber.hash(credentials.password);
 
         const sql = `
-            SELECT *
-            FROM users
-            WHERE email=$1 AND password=$2
-        `;
+  SELECT *
+  FROM users
+  WHERE email = $1 AND password = $2
+`;
+
 
         const users = await dal.execute<UserModel>(sql, [
             credentials.email,
