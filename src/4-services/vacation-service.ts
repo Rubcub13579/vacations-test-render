@@ -183,17 +183,17 @@ WHERE "userId"=$1 AND "vacationId"=$2
     ): Promise<{ likesCount: number; isLikedByUser: boolean }> {
 
         const sql = `
-        SELECT
-            COUNT(*)::int AS "likesCount",
-            EXISTS (
-                SELECT 1
-                FROM likes
-                WHERE "vacationId" = $1
-                  AND "userId" = $2
-            ) AS "isLikedByUser"
+    SELECT
+      COUNT(*)::int AS "likesCount",
+      EXISTS (
+        SELECT 1
         FROM likes
-        WHERE "vacationId" = $1
-    `;
+        WHERE "vacationId" = $1::int
+          AND "userId" = $2::int
+      ) AS "isLikedByUser"
+    FROM likes
+    WHERE "vacationId" = $1::int
+  `;
 
         const [result] = await dal.execute<{
             likesCount: number;
@@ -202,6 +202,7 @@ WHERE "userId"=$1 AND "vacationId"=$2
 
         return result;
     }
+
 
 
 
