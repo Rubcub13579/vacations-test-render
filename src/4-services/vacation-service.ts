@@ -11,16 +11,12 @@ class VacationService {
     public async getAllVacations(): Promise<VacationModel[]> {
 
         const sql = `
-            SELECT 
-                id,
-                destination,
-                description,
-                "startDate",
-                "endDate",
-                price,
-                CONCAT($1, "imageName") AS "imageUrl"
-            FROM vacations
-            ORDER BY "startDate"
+            SELECT
+  id, destination, description,
+  "startDate","endDate", price,
+  CONCAT($1, "imageName") AS "imageUrl"
+FROM vacations
+ORDER BY "startDate"
         `;
 
         return await dal.execute<VacationModel>(sql, [appConfig.imagesUrl]);
@@ -50,9 +46,10 @@ class VacationService {
 
         const sql = `
             INSERT INTO vacations
-            (destination, description, "startDate", "endDate", price, "imageName")
-            VALUES ($1, $2, $3, $4, $5, $6)
-            RETURNING *
+(destination, description, "startDate", "endDate", price, "imageName")
+VALUES ($1,$2,$3,$4,$5,$6)
+RETURNING *
+
         `;
 
         const values = [
@@ -81,11 +78,12 @@ class VacationService {
             const newImageName = await fileSaver.add(vacation.image);
 
             sql = `
-                UPDATE vacations
-                SET destination=$1, description=$2, "startDate"=$3,
-                    "endDate"=$4, price=$5, "imageName"=$6
-                WHERE id=$7
-                RETURNING *
+                SET destination=$1, description=$2,
+    "startDate"=$3, "endDate"=$4,
+    price=$5, "imageName"=$6
+WHERE id=$7
+RETURNING *
+
             `;
 
             values = [
@@ -159,9 +157,10 @@ class VacationService {
     public async likeVacation(userId: number, vacationId: number): Promise<void> {
 
         const sql = `
-  INSERT INTO likes ("userId", "vacationId")
-  VALUES ($1, $2)
-  ON CONFLICT DO NOTHING
+  INSERT INTO likes ("userId","vacationId")
+VALUES ($1,$2)
+ON CONFLICT DO NOTHING
+
 `;
         await dal.execute(sql, [userId, vacationId]);
 
@@ -171,7 +170,8 @@ class VacationService {
 
         const sql = `
   DELETE FROM likes
-  WHERE "userId"=$1 AND "vacationId"=$2
+WHERE "userId"=$1 AND "vacationId"=$2
+
 `;
         await dal.executeNonQuery(sql, [userId, vacationId]);
 
@@ -209,11 +209,12 @@ class VacationService {
 
         const sql = `
   SELECT
-    v.destination AS "vacationName",
-    COUNT(l."userId") AS likes
-  FROM vacations v
-  LEFT JOIN likes l ON v.id = l."vacationId"
-  GROUP BY v.id, v.destination
+  v.destination AS "vacationName",
+  COUNT(l."userId") AS likes
+FROM vacations v
+LEFT JOIN likes l ON v.id = l."vacationId"
+GROUP BY v.id, v.destination
+
 `;
         return await dal.execute<LikesModel>(sql);
 
