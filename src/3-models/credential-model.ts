@@ -7,15 +7,17 @@ export class CredentialsModel {
     public email: string;
     public password: string;
 
-    public constructor(credentials:CredentialsModel) {
-        this.email = credentials.email
-        this.password = credentials.password
+    public constructor(credentials: Partial<CredentialsModel>) {
+        this.email = credentials?.email?.trim();
+        this.password = credentials?.password;
     }
 
+
     private static validationSchema = Joi.object({
-        email: Joi.string().required().min(10).max(75),
+        email: Joi.string().email().required().min(5).max(75),
         password: Joi.string().required().min(2).max(256)
-    })
+    });
+
 
     public validate():void{
         const result = CredentialsModel.validationSchema.validate(this);

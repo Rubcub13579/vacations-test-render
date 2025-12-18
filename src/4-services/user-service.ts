@@ -7,9 +7,7 @@ import { RoleModel } from "../3-models/role-model";
 import { UserModel } from "../3-models/user-Model";
 
 class UserService {
-
     public async register(user: UserModel): Promise<string> {
-
         user.password = cyber.hash(user.password);
 
         const sql = `
@@ -19,21 +17,19 @@ class UserService {
   RETURNING *
 `;
 
-
         const values = [
             user.firstName,
             user.lastName,
             user.email,
             user.password,
-            RoleModel.user
+            RoleModel.user,
         ];
 
         try {
             const [dbUser] = await dal.execute<UserModel>(sql, values);
             const token = cyber.getNewToken(dbUser);
             return token;
-        }
-        catch (err: any) {
+        } catch (err: any) {
             if (err.code === "23505") {
                 throw new ClientError(StatusCode.Conflict, "Email is already taken");
             }
@@ -43,6 +39,8 @@ class UserService {
 
     public async login(credentials: CredentialsModel): Promise<string> {
 
+        credentials.validate();
+
         credentials.password = cyber.hash(credentials.password);
 
         const sql = `
@@ -51,14 +49,16 @@ class UserService {
   WHERE email = $1 AND password = $2
 `;
 
-
         const users = await dal.execute<UserModel>(sql, [
             credentials.email,
-            credentials.password
+            credentials.password,
         ]);
 
         if (!users.length)
-            throw new ClientError(StatusCode.Unauthorized, "Incorrect email or password");
+            throw new ClientError(
+                StatusCode.Unauthorized,
+                "Incorrect email or password"
+            );
 
         return cyber.getNewToken(users[0]);
     }

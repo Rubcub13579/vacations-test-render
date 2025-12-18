@@ -159,61 +159,64 @@ class VacationService {
     public async likeVacation(userId: number, vacationId: number): Promise<void> {
 
         const sql = `
-            INSERT INTO likes (userId, vacationId)
-            VALUES ($1, $2)
-            ON CONFLICT DO NOTHING
-        `;
-
+  INSERT INTO likes ("userId", "vacationId")
+  VALUES ($1, $2)
+  ON CONFLICT DO NOTHING
+`;
         await dal.execute(sql, [userId, vacationId]);
+
     }
 
     public async unlikeVacation(userId: number, vacationId: number): Promise<void> {
 
         const sql = `
-            DELETE FROM likes
-            WHERE userId=$1 AND vacationId=$2
-        `;
-
+  DELETE FROM likes
+  WHERE "userId"=$1 AND "vacationId"=$2
+`;
         await dal.executeNonQuery(sql, [userId, vacationId]);
+
     }
 
     public async getVacationLikes(
-    vacationId: number,
-    userId: number
-): Promise<{ likesCount: number; isLikedByUser: boolean }> {
+        vacationId: number,
+        userId: number
+    ): Promise<{ likesCount: number; isLikedByUser: boolean }> {
 
-    const sql = `
+        const sql = `
         SELECT
             COUNT(*)::int AS "likesCount",
             EXISTS (
-                SELECT 1 FROM likes
-                WHERE "vacationId" = $1 AND "userId" = $2
+                SELECT 1
+                FROM likes
+                WHERE "vacationId" = $1
+                  AND "userId" = $2
             ) AS "isLikedByUser"
         FROM likes
         WHERE "vacationId" = $1
     `;
 
-    const [result] = await dal.execute<{
-        likesCount: number;
-        isLikedByUser: boolean;
-    }>(sql, [vacationId, userId]);
+        const [result] = await dal.execute<{
+            likesCount: number;
+            isLikedByUser: boolean;
+        }>(sql, [vacationId, userId]);
 
-    return result;
-}
+        return result;
+    }
+
 
 
     public async getAllVacationsLikes(): Promise<LikesModel[]> {
 
         const sql = `
-            SELECT
-                v.destination AS "vacationName",
-                COUNT(l.userId) AS likes
-            FROM vacations v
-            LEFT JOIN likes l ON v.id = l.vacationId
-            GROUP BY v.id, v.destination
-        `;
-
+  SELECT
+    v.destination AS "vacationName",
+    COUNT(l."userId") AS likes
+  FROM vacations v
+  LEFT JOIN likes l ON v.id = l."vacationId"
+  GROUP BY v.id, v.destination
+`;
         return await dal.execute<LikesModel>(sql);
+
     }
 }
 
