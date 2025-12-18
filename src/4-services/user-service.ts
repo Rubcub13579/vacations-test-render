@@ -1,55 +1,64 @@
-import { OkPacketParams } from "mysql2";
 import { cyber } from "../2-utils/cyber";
 import { dal } from "../2-utils/dal";
 import { ClientError } from "../3-models/client-error";
 import { CredentialsModel } from "../3-models/credential-model";
 import { StatusCode } from "../3-models/enums";
 import { RoleModel } from "../3-models/role-model";
-import { UserModel } from "../3-models/user-Model";
-
+import { UserModel } from "../3-models/user-model";
 
 class UserService {
-
 
     public async register(user: UserModel): Promise<string> {
 
         user.password = cyber.hash(user.password);
 
-        const sql = "INSERT INTO users (firstName, lastName, email, password, roleId) VALUES (?, ?, ?, ?, ?)";
-        const values = [user.firstName, user.lastName, user.email, user.password, RoleModel.user];
+        const sql = `
+            INSERT INTO users
+            (firstName, lastName, email, password, roleId)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *
+        `;
+
+        const values = [
+            user.firstName,
+            user.lastName,
+            user.email,
+            user.password,
+            RoleModel.user
+        ];
 
         try {
-            const info: OkPacketParams = await dal.execute(sql, values) as OkPacketParams;
-            user.id = info.insertId;
-            user.roleId = RoleModel.user;
-            const token = cyber.getNewToken(user);
+            const [dbUser] = await dal.execute<UserModel>(sql, values);
+            const token = cyber.getNewToken(dbUser);
             return token;
         }
         catch (err: any) {
-            if (err.code === "ER_DUP_ENTRY") {
+            if (err.code === "23505") {
                 throw new ClientError(StatusCode.Conflict, "Email is already taken");
             }
             throw err;
         }
     }
 
-
     public async login(credentials: CredentialsModel): Promise<string> {
 
         credentials.password = cyber.hash(credentials.password);
 
-        const sql = "select * from users where email = ? and password = ?";
-        const values = [credentials.email, credentials.password];
+        const sql = `
+            SELECT *
+            FROM users
+            WHERE email=$1 AND password=$2
+        `;
 
-        const users = await dal.execute(sql, values) as UserModel[];
-        const user = users[0];
+        const users = await dal.execute<UserModel>(sql, [
+            credentials.email,
+            credentials.password
+        ]);
 
-        if (!user) throw new ClientError(StatusCode.Unauthorized, "Incorrect email or password");
+        if (!users.length)
+            throw new ClientError(StatusCode.Unauthorized, "Incorrect email or password");
 
-        const token = cyber.getNewToken(user);
-
-        return token;
-
+        return cyber.getNewToken(users[0]);
     }
 }
 

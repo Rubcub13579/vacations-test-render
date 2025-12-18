@@ -1,35 +1,26 @@
-import mysql2, { PoolOptions, QueryError, QueryResult } from "mysql2";
+import { Pool } from "pg";
 import { appConfig } from "./app-config";
-
 
 class DAL {
 
-    private options: PoolOptions = {
-        host: appConfig.host,
-        user: appConfig.user,
-        password: appConfig.password,
-        database: appConfig.database
-    };
+    private pool = new Pool({
+        host: appConfig.dbHost,
+        port: appConfig.dbPort,
+        database: appConfig.dbName,
+        user: appConfig.dbUser,
+        password: appConfig.dbPassword,
+        ssl: { rejectUnauthorized: false } // REQUIRED on Render
+    });
 
+    public async execute<T>(sql: string, values?: any[]): Promise<T[]> {
+        const result = await this.pool.query(sql, values);
+        return result.rows;
+    }
 
-    private readonly connection = mysql2.createPool(this.options);
-
-    public execute(sql: string, values?: Array<number | string>): Promise<QueryResult> {
-
-        return new Promise<QueryResult>((resolve, reject) => { 
-
-            this.connection.query(sql, values, (err: QueryError, result: QueryResult) => {
-
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                resolve(result);
-
-            });
-        });
+    public async executeNonQuery(sql: string, values?: any[]): Promise<number> {
+        const result = await this.pool.query(sql, values);
+        return result.rowCount ?? 0;
     }
 }
 
-export const dal = new DAL()
+export const dal = new DAL();

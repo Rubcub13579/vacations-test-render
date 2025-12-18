@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { CredentialsModel } from "../3-models/credential-model";
 import { StatusCode } from "../3-models/enums";
-import { UserModel } from "../3-models/user-Model";
+import { UserModel } from "../3-models/user-model";
 import { userService } from "../4-services/user-service";
 
 

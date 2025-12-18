@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import jwt, { SignOptions } from "jsonwebtoken";
 import { RoleModel } from "../3-models/role-model";
-import { UserModel } from "../3-models/user-Model";
+import { UserModel } from "../3-models/user-model";
 import { appConfig } from "./app-config";
 
 

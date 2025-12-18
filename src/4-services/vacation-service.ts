@@ -1,4 +1,3 @@
-import { OkPacketParams } from "mysql2";
 import { fileSaver } from "uploaded-file-saver";
 import { appConfig } from "../2-utils/app-config";
 import { dal } from "../2-utils/dal";
@@ -10,145 +9,212 @@ import { VacationModel } from "../3-models/vacation-model";
 class VacationService {
 
     public async getAllVacations(): Promise<VacationModel[]> {
-        const sql = "select id,destination, description, startDate, endDate, price, concat(?, imageName) as imageUrl from vacations order by startDate";
-        const values = [appConfig.imagesUrl]
 
-        const vacations = await dal.execute(sql, values) as VacationModel[];
-        return vacations;
+        const sql = `
+            SELECT 
+                id,
+                destination,
+                description,
+                "startDate",
+                "endDate",
+                price,
+                CONCAT($1, "imageName") AS "imageUrl"
+            FROM vacations
+            ORDER BY "startDate"
+        `;
+
+        return await dal.execute<VacationModel>(sql, [appConfig.imagesUrl]);
     }
 
     public async getOneVacation(vacationId: number): Promise<VacationModel> {
 
-        const sql = "select *, concat(?, imageName) as imageUrl from vacations where id = ?";
-        const values = [appConfig.imagesUrl, vacationId];
+        const sql = `
+            SELECT 
+                *,
+                CONCAT($1, "imageName") AS "imageUrl"
+            FROM vacations
+            WHERE id = $2
+        `;
 
-        const vacations = await dal.execute(sql, values) as VacationModel[]
-        const vacation = vacations[0];
-        return vacation
+        const vacations = await dal.execute<VacationModel>(sql, [appConfig.imagesUrl, vacationId]);
+        return vacations[0];
     }
 
     public async addVacation(vacation: VacationModel): Promise<VacationModel> {
 
         vacation.validate();
 
-        const imageName = vacation.image ? await fileSaver.add(vacation.image) : null;
+        const imageName = vacation.image
+            ? await fileSaver.add(vacation.image)
+            : null;
 
-        const sql = "insert into vacations (destination, description, startDate, endDate, price, imageName) values(?, ?, ?, ?, ?, ?)";
-        const values = [vacation.destination, vacation.description, vacation.startDate, vacation.endDate, vacation.price, imageName];
+        const sql = `
+            INSERT INTO vacations
+            (destination, description, "startDate", "endDate", price, "imageName")
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+        `;
 
-        const info = await dal.execute(sql, values) as OkPacketParams
+        const values = [
+            vacation.destination,
+            vacation.description,
+            vacation.startDate,
+            vacation.endDate,
+            vacation.price,
+            imageName
+        ];
 
-        const dbVacation = await this.getOneVacation(info.insertId);
-        console.log(dbVacation);
-
+        const [dbVacation] = await dal.execute<VacationModel>(sql, values);
         return dbVacation;
     }
 
     public async updateVacation(vacation: VacationModel): Promise<VacationModel> {
 
         vacation.validate();
+
         let sql: string;
         let values: any[];
 
-        // If a new image is provided, update everything including the image
         if (vacation.image) {
-            // Get the old image name to delete it later
-            const oldImageName = await this.getImageName(vacation.id);
 
-            // Save the new image
+            const oldImageName = await this.getImageName(vacation.id);
             const newImageName = await fileSaver.add(vacation.image);
 
-            sql = "UPDATE vacations SET destination = ?, description = ?, startDate = ?, endDate = ?, price = ?, imageName = ? WHERE id = ?";
-            values = [vacation.destination, vacation.description, vacation.startDate, vacation.endDate, vacation.price, newImageName, vacation.id];
+            sql = `
+                UPDATE vacations
+                SET destination=$1, description=$2, "startDate"=$3,
+                    "endDate"=$4, price=$5, "imageName"=$6
+                WHERE id=$7
+                RETURNING *
+            `;
 
-            // Delete the old image after successful update
-            if (oldImageName) {
-                await fileSaver.delete(oldImageName);
-            }
+            values = [
+                vacation.destination,
+                vacation.description,
+                vacation.startDate,
+                vacation.endDate,
+                vacation.price,
+                newImageName,
+                vacation.id
+            ];
+
+            if (oldImageName) await fileSaver.delete(oldImageName);
+
         } else {
-            // No new image provided, update everything except the image
-            sql = "UPDATE vacations SET destination = ?, description = ?, startDate = ?, endDate = ?, price = ? WHERE id = ?";
-            values = [vacation.destination, vacation.description, vacation.startDate, vacation.endDate, vacation.price, vacation.id];
+
+            sql = `
+                UPDATE vacations
+                SET destination=$1, description=$2, "startDate"=$3,
+                    "endDate"=$4, price=$5
+                WHERE id=$6
+                RETURNING *
+            `;
+
+            values = [
+                vacation.destination,
+                vacation.description,
+                vacation.startDate,
+                vacation.endDate,
+                vacation.price,
+                vacation.id
+            ];
         }
 
-        const info = await dal.execute(sql, values) as OkPacketParams;
+        const vacations = await dal.execute<VacationModel>(sql, values);
+        if (!vacations.length)
+            throw new ClientError(StatusCode.NotFound, `id ${vacation.id} not exist`);
 
-        if (info.affectedRows === 0) throw new ClientError(StatusCode.NotFound, `id ${vacation.id} not exist`);
-
-        const dbVacation = await this.getOneVacation(vacation.id);
-        console.log(dbVacation);
-
-        return dbVacation;
-
+        return vacations[0];
     }
 
     public async deleteVacation(id: number): Promise<void> {
-        const oldFileName = await this.getImageName(id);
-        const sql = "delete from vacations where id = ?";
-        const values = [id];
-        const info = await dal.execute(sql, values) as OkPacketParams;
-        if (info.affectedRows === 0) throw new ClientError(StatusCode.NotFound, `id ${id} not found`);
-        await fileSaver.delete(oldFileName);
+
+        const oldImageName = await this.getImageName(id);
+
+        const sql = `
+            DELETE FROM vacations
+            WHERE id=$1
+        `;
+
+        const affected = await dal.executeNonQuery(sql, [id]);
+
+        if (affected === 0)
+            throw new ClientError(StatusCode.NotFound, `id ${id} not found`);
+
+        if (oldImageName) await fileSaver.delete(oldImageName);
     }
 
-    private async getImageName(id: number): Promise<string> {
-        const sql = "select imageName from vacations where id = ?";
-        const values = [id];
-        const vacations = await dal.execute(sql, values);
-        const vacation = vacations[0];
-        if (!vacation) return null;
-        return vacation.imageName
+    private async getImageName(id: number): Promise<string | null> {
+
+        const sql = `
+            SELECT "imageName"
+            FROM vacations
+            WHERE id=$1
+        `;
+
+        const result = await dal.execute<{ imageName: string }>(sql, [id]);
+        return result[0]?.imageName ?? null;
     }
 
     public async likeVacation(userId: number, vacationId: number): Promise<void> {
-        const checkSql = "SELECT * FROM likes WHERE userId = ? AND vacationId = ?";
-        const values = [userId, vacationId];
-        const existing = await dal.execute(checkSql, values);
-        if ((existing as any[]).length > 0) return;
-        const insertSql = "INSERT INTO likes (userId, vacationId) values(?,?)";
-        await dal.execute(insertSql, values);
+
+        const sql = `
+            INSERT INTO likes (userId, vacationId)
+            VALUES ($1, $2)
+            ON CONFLICT DO NOTHING
+        `;
+
+        await dal.execute(sql, [userId, vacationId]);
     }
 
     public async unlikeVacation(userId: number, vacationId: number): Promise<void> {
-        const sql = "DELETE FROM likes WHERE userId = ? AND vacationId = ?";
-        const values = [userId, vacationId];
-        await dal.execute(sql, values)
-    }
 
-    // shows user how many likes vacation has and if he liked it 
-    public async getVacationLikes(vacationId: number, userId: number): Promise<{ likesCount: number, isLikedByUser: boolean }> {
         const sql = `
-            SELECT
-                (SELECT COUNT(*) FROM likes WHERE vacationId = ?) AS likesCount,
-                EXISTS(SELECT * FROM likes WHERE vacationId = ? AND userId = ?) AS isLikedByUser
+            DELETE FROM likes
+            WHERE userId=$1 AND vacationId=$2
         `;
-        const values = [vacationId, vacationId, userId]
-        const result = await dal.execute(sql, values);
 
-        return {
-            likesCount: result[0].likesCount,
-            isLikedByUser: result[0].isLikedByUser === 1
-        };
+        await dal.executeNonQuery(sql, [userId, vacationId]);
     }
 
-    // gets array of all vacation names and how many likes it has
-    public async getAllVacationsLikes(): Promise<LikesModel[]> {
-        const sql = `
-        SELECT v.destination AS vacationName, COUNT(l.userId) AS likes FROM
-        vacations as v LEFT JOIN likes as l ON v.id = l.vacationId
-        GROUP BY v.id, v.destination ;
-        `;
-        const vacationsLikes = await dal.execute(sql) as LikesModel[];
-        return vacationsLikes;
-    }
+    public async getVacationLikes(
+    vacationId: number,
+    userId: number
+): Promise<{ likesCount: number; isLikedByUser: boolean }> {
 
+    const sql = `
+        SELECT
+            COUNT(*)::int AS "likesCount",
+            EXISTS (
+                SELECT 1 FROM likes
+                WHERE "vacationId" = $1 AND "userId" = $2
+            ) AS "isLikedByUser"
+        FROM likes
+        WHERE "vacationId" = $1
+    `;
 
+    const [result] = await dal.execute<{
+        likesCount: number;
+        isLikedByUser: boolean;
+    }>(sql, [vacationId, userId]);
 
-
-
+    return result;
 }
 
 
+    public async getAllVacationsLikes(): Promise<LikesModel[]> {
 
+        const sql = `
+            SELECT
+                v.destination AS "vacationName",
+                COUNT(l.userId) AS likes
+            FROM vacations v
+            LEFT JOIN likes l ON v.id = l.vacationId
+            GROUP BY v.id, v.destination
+        `;
+
+        return await dal.execute<LikesModel>(sql);
+    }
+}
 
 export const vacationService = new VacationService();
