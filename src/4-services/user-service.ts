@@ -4,7 +4,7 @@ import { ClientError } from "../3-models/client-error";
 import { CredentialsModel } from "../3-models/credential-model";
 import { StatusCode } from "../3-models/enums";
 import { RoleModel } from "../3-models/role-model";
-import { UserModel } from "../3-models/user-model";
+import { UserModel } from "../3-models/user-Model";
 
 class UserService {
 
